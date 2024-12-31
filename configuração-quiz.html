@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Configuração do Quiz de Matemática</title>
+</head>
+<body>
+  <form id="configForm">
+    <label for="nivel_dificuldade">Nível de Dificuldade:</label>
+    <input type="text" id="nivel_dificuldade" name="nivel_dificuldade"><br><br>
+    <label for="topicos">Tópicos:</label>
+    <input type="text" id="topicos" name="topicos"><br><br>
+    <input type="submit" value="Salvar">
+  </form>
+
+  <script>
+    document.getElementById('configForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      
+      const nivelDificuldade = document.getElementById('nivel_dificuldade').value;
+      const topicos = document.getElementById('topicos').value;
+
+      const configData = {
+        nivel_dificuldade: nivelDificuldade,
+        topicos: topicos
+      };
+
+      fetch('http://<domínio>/deploy-quiz', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(configData)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+    });
+  </script>
+</body>
+</html>

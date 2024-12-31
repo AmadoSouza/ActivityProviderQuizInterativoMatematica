@@ -1,0 +1,4 @@
+[
+  {"name": "nivel_dificuldade", "type": "text/plain"},
+  {"name": "topicos", "type": "text/plain"}
+]
