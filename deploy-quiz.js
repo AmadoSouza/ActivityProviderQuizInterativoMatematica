@@ -2,12 +2,16 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const uuid = require('uuid');
+const path = require('path');
 
 app.use(bodyParser.json());
 
+// Servir arquivos estáticos da pasta 'public'
+app.use(express.static(path.join(__dirname, 'public')));
+
 // Rota para a raiz ("/")
 app.get('/', (req, res) => {
-  res.send('Bem-vindo ao Quiz de Matemática!');
+  res.sendFile(path.join(__dirname, 'public', 'configuracao-quiz.html'));
 });
 
 app.post('/deploy-quiz', (req, res) => {
