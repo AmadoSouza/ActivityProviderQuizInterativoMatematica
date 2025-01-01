@@ -5,6 +5,11 @@ const uuid = require('uuid');
 
 app.use(bodyParser.json());
 
+// Rota para a raiz ("/")
+app.get('/', (req, res) => {
+  res.send('Bem-vindo ao Quiz de Matemática!');
+});
+
 app.post('/deploy-quiz', (req, res) => {
   const { nivel_dificuldade, topicos } = req.body;
 
