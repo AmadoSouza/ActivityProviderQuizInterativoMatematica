@@ -6,12 +6,9 @@ const path = require('path');
 
 app.use(bodyParser.json());
 
-// Servir arquivos estáticos da pasta 'public'
-app.use(express.static(path.join(__dirname, 'public')));
-
 // Rota para a raiz ("/")
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'configuracao-quiz.html'));
+  res.sendFile(path.join(__dirname, 'configuracao-quiz.html'));
 });
 
 app.post('/deploy-quiz', (req, res) => {
