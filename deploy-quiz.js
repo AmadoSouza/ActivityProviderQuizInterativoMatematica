@@ -23,7 +23,7 @@ app.post('/deploy-quiz', (req, res) => {
 
   const quizURLs = alunos.map(aluno => {
     const alunoID = uuid.v4();
-    return `http://<domínio>/quiz12345?aluno=${alunoID}`;
+    return `http://localhost:3000/quiz12345?aluno=${alunoID}`;
   });
 
   // Aqui você pode salvar os dados no banco de dados, se necessário
