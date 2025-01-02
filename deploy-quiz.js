@@ -22,8 +22,6 @@ app.get('/quiz12345', (req, res) => {
     return res.status(404).send('Quiz não encontrado');
   }
 
-  console.log('Perguntas carregadas para o aluno:', quizData.perguntas);
-
   res.send(`
     <!DOCTYPE html>
     <html>
@@ -66,8 +64,6 @@ app.post('/deploy-quiz', (req, res) => {
     console.error('Dados incompletos recebidos');
     return res.status(400).json({ message: 'Dados incompletos' });
   }
-
-  console.log('Perguntas recebidas:', perguntas);
 
   const quizURLs = alunos.map(aluno => {
     const alunoID = uuid.v4();
