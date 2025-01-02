@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html>
 <head>
   <title>Configuração do Quiz de Matemática</title>
@@ -11,6 +11,8 @@
     <input type="text" id="topicos" name="topicos"><br><br>
     <input type="submit" value="Salvar">
   </form>
+
+  <div id="result"></div>
 
   <script>
     document.getElementById('configForm').addEventListener('submit', function(event) {
@@ -39,7 +41,7 @@
       })
       .then(data => {
         console.log('Success:', data);
-        alert('Configuração salva com sucesso!');
+        document.getElementById('result').innerHTML = `Configuração salva com sucesso! Link do quiz: <a href="${data.quizURL}" target="_blank">${data.quizURL}</a>`;
       })
       .catch((error) => {
         console.error('Error:', error);
