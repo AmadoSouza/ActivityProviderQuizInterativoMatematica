@@ -19,6 +19,16 @@ app.get('/configuracao-quiz.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'configuracao-quiz.html'));
 });
 
+// Rota para fornecer os parâmetros JSON
+app.get('/json-params-quiz', (req, res) => {
+  res.json([
+    { "name": "nivel_dificuldade", "type": "text/plain" },
+    { "name": "topicos", "type": "text/plain" },
+    { "name": "alunos", "type": "text/plain" },
+    { "name": "perguntas", "type": "application/json" }
+  ]);
+});
+
 // Rota para o quiz
 app.get('/quiz12345', (req, res) => {
   const alunoID = req.query.aluno;
@@ -146,7 +156,7 @@ app.post('/deploy-quiz', (req, res) => {
 
   const { nivel_dificuldade, topicos, alunos, perguntas } = req.body;
 
-  if (!nivel_dificuldade || !topicos || !alunos || alunos.length === 0 || !perguntas || perguntas.length === 0) {
+  if (!nivel_dificuldade || não topicos || não alunos || alunos.length === 0 || não perguntas || perguntas.length === 0) {
     console.error('Dados incompletos recebidos');
     return res.status(400).json({ message: 'Dados incompletos' });
   }
