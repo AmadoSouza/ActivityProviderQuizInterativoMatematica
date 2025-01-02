@@ -29,6 +29,11 @@ app.get('/json-params-quiz', (req, res) => {
   ]);
 });
 
+// Rota para a página de deploy do quiz
+app.get('/deploy-quiz', (req, res) => {
+  res.sendFile(path.join(__dirname, 'configuracao-quiz.html'));
+});
+
 // Rota para o quiz
 app.get('/quiz12345', (req, res) => {
   const alunoID = req.query.aluno;
@@ -132,7 +137,7 @@ app.get('/analytics', (req, res) => {
               const alunoDiv = document.createElement('div');
               alunoDiv.innerHTML = \`<h3>Aluno: \${alunoID}</h3>\`;
               data[alunoID].forEach((resposta, index) => {
-                alunoDiv.innerHTML += \`<p>Pergunta \${index + 1}: \${resposta}</p>\`;
+                alunoDiv.innerHTML += \`<p>Pergunta \${index + 1}: \${resposta}\`;
               });
               analyticsContainer.appendChild(alunoDiv);
             });
