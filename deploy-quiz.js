@@ -23,7 +23,7 @@ app.post('/deploy-quiz', (req, res) => {
 
   const quizURLs = alunos.map(aluno => {
     const alunoID = uuid.v4();
-    return `https://<seu-domínio>.onrender.com/quiz12345?aluno=${alunoID}`;
+    return `https://${req.hostname}/quiz12345?aluno=${alunoID}`;
   });
 
   // Aqui você pode salvar os dados no banco de dados, se necessário
