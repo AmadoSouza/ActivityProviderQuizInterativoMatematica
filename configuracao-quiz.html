@@ -1,4 +1,4 @@
-!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
   <title>Configuração do Quiz de Matemática</title>
@@ -7,8 +7,59 @@
   <form id="configForm">
     <label for="nivel_dificuldade">Nível de Dificuldade:</label>
     <input type="text" id="nivel_dificuldade" name="nivel_dificuldade"><br><br>
+
     <label for="topicos">Tópicos:</label>
     <input type="text" id="topicos" name="topicos"><br><br>
+
+    <label for="alunos">Alunos (até 10):</label><br>
+    <textarea id="alunos" name="alunos" rows="10" cols="30" placeholder="Digite os nomes dos alunos, um por linha"></textarea><br><br>
+
+    <div id="perguntas">
+      <h3>Perguntas (até 3):</h3>
+      <div class="pergunta">
+        <label for="pergunta1">Pergunta 1:</label>
+        <input type="text" id="pergunta1" name="pergunta1"><br>
+        <label for="opcao1_1">Opção 1:</label>
+        <input type="text" id="opcao1_1" name="opcao1_1"><br>
+        <label for="opcao1_2">Opção 2:</label>
+        <input type="text" id="opcao1_2" name="opcao1_2"><br>
+        <label for="opcao1_3">Opção 3:</label>
+        <input type="text" id="opcao1_3" name="opcao1_3"><br>
+        <label for="opcao1_4">Opção 4:</label>
+        <input type="text" id="opcao1_4" name="opcao1_4"><br>
+        <label for="resposta1">Resposta Correta:</label>
+        <input type="text" id="resposta1" name="resposta1"><br><br>
+      </div>
+      <div class="pergunta">
+        <label for="pergunta2">Pergunta 2:</label>
+        <input type="text" id="pergunta2" name="pergunta2"><br>
+        <label for="opcao2_1">Opção 1:</label>
+        <input type="text" id="opcao2_1" name="opcao2_1"><br>
+        <label for="opcao2_2">Opção 2:</label>
+        <input type="text" id="opcao2_2" name="opcao2_2"><br>
+        <label for="opcao2_3">Opção 3:</label>
+        <input type="text" id="opcao2_3" name="opcao2_3"><br>
+        <label for="opcao2_4">Opção 4:</label>
+        <input type="text" id="opcao2_4" name="opcao2_4"><br>
+        <label for="resposta2">Resposta Correta:</label>
+        <input type="text" id="resposta2" name="resposta2"><br><br>
+      </div>
+      <div class="pergunta">
+        <label for="pergunta3">Pergunta 3:</label>
+        <input type="text" id="pergunta3" name="pergunta3"><br>
+        <label for="opcao3_1">Opção 1:</label>
+        <input type="text" id="opcao3_1" name="opcao3_1"><br>
+        <label for="opcao3_2">Opção 2:</label>
+        <input type="text" id="opcao3_2" name="opcao3_2"><br>
+        <label for="opcao3_3">Opção 3:</label>
+        <input type="text" id="opcao3_3" name="opcao3_3"><br>
+        <label for="opcao3_4">Opção 4:</label>
+        <input type="text" id="opcao3_4" name="opcao3_4"><br>
+        <label for="resposta3">Resposta Correta:</label>
+        <input type="text" id="resposta3" name="resposta3"><br><br>
+      </div>
+    </div>
+
     <input type="submit" value="Salvar">
   </form>
 
@@ -20,10 +71,28 @@
       
       const nivelDificuldade = document.getElementById('nivel_dificuldade').value;
       const topicos = document.getElementById('topicos').value;
+      const alunos = document.getElementById('alunos').value.split('\n').filter(aluno => aluno.trim() !== '');
+
+      const perguntas = [];
+      for (let i = 1; i <= 3; i++) {
+        const pergunta = document.getElementById(`pergunta${i}`).value;
+        const opcoes = [
+          document.getElementById(`opcao${i}_1`).value,
+          document.getElementById(`opcao${i}_2`).value,
+          document.getElementById(`opcao${i}_3`).value,
+          document.getElementById(`opcao${i}_4`).value
+        ];
+        const resposta = document.getElementById(`resposta${i}`).value;
+        if (pergunta && opcoes.every(opcao => opcao) && resposta) {
+          perguntas.push({ pergunta, opcoes, resposta });
+        }
+      }
 
       const configData = {
         nivel_dificuldade: nivelDificuldade,
-        topicos: topicos
+        topicos: topicos,
+        alunos: alunos,
+        perguntas: perguntas
       };
 
       fetch('/deploy-quiz', {
@@ -41,7 +110,11 @@
       })
       .then(data => {
         console.log('Success:', data);
-        document.getElementById('result').innerHTML = `Configuração salva com sucesso! Link do quiz: <a href="${data.quizURL}" target="_blank">${data.quizURL}</a>`;
+        const resultDiv = document.getElementById('result');
+        resultDiv.innerHTML = 'Configuração salva com sucesso!<br>';
+        data.quizURLs.forEach((url, index) => {
+          resultDiv.innerHTML += `Link do aluno ${index + 1}: <a href="${url}" target="_blank">${url}</a><br>`;
+        });
       })
       .catch((error) => {
         console.error('Error:', error);
