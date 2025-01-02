@@ -11,6 +11,11 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'configuracao-quiz.html'));
 });
 
+// Rota para o quiz
+app.get('/quiz12345', (req, res) => {
+  res.sendFile(path.join(__dirname, 'quiz.html'));
+});
+
 app.post('/deploy-quiz', (req, res) => {
   console.log('Recebendo dados do formulário:', req.body);
 
