@@ -151,6 +151,7 @@ app.get('/get-analytics', (req, res) => {
   res.json(respostas);
 });
 
+// Rota para deploy do quiz
 app.post('/deploy-quiz', (req, res) => {
   console.log('Recebendo dados do formulário:', req.body);
 
@@ -173,6 +174,16 @@ app.post('/deploy-quiz', (req, res) => {
     message: 'Quiz configurado com sucesso!',
     quizURLs: quizURLs
   });
+});
+
+// Rota para analytics do quiz
+app.get('/analytics-quiz', (req, res) => {
+  res.json(respostas);
+});
+
+// Rota para lista de analytics do quiz
+app.get('/lista-analytics-quiz', (req, res) => {
+  res.json(Object.keys(respostas));
 });
 
 const PORT = process.env.PORT || 3000;
