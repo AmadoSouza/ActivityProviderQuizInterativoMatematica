@@ -156,7 +156,7 @@ app.post('/deploy-quiz', (req, res) => {
 
   const { nivel_dificuldade, topicos, alunos, perguntas } = req.body;
 
-  if (!nivel_dificuldade || não topicos || não alunos || alunos.length === 0 || não perguntas || perguntas.length === 0) {
+  if (!nivel_dificuldade || !topicos || !alunos || alunos.length === 0 || !perguntas || perguntas.length === 0) {
     console.error('Dados incompletos recebidos');
     return res.status(400).json({ message: 'Dados incompletos' });
   }
