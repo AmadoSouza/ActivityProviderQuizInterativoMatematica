@@ -24,14 +24,19 @@
         topicos: topicos
       };
 
-      fetch('http://<domínio>/deploy-quiz', {
+      fetch('/deploy-quiz', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(configData)
       })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Erro na resposta do servidor');
+        }
+        return response.json();
+      })
       .then(data => {
         console.log('Success:', data);
         alert('Configuração salva com sucesso!');
