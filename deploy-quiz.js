@@ -14,6 +14,11 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'configuracao-quiz.html'));
 });
 
+// Rota para a página de configuração
+app.get('/configuracao-quiz.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'configuracao-quiz.html'));
+});
+
 // Rota para o quiz
 app.get('/quiz12345', (req, res) => {
   const alunoID = req.query.aluno;
