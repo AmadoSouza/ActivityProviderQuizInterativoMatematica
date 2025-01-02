@@ -7,6 +7,7 @@ const path = require('path');
 app.use(bodyParser.json());
 
 let quizzes = {}; // Armazenar quizzes configurados
+let respostas = {}; // Armazenar respostas dos alunos
 
 // Rota para a raiz ("/")
 app.get('/', (req, res) => {
@@ -22,8 +23,6 @@ app.get('/quiz12345', (req, res) => {
     return res.status(404).send('Quiz não encontrado');
   }
 
-  console.log('Perguntas carregadas para o aluno:', quizData.perguntas);
-
   res.send(`
     <!DOCTYPE html>
     <html>
@@ -33,9 +32,11 @@ app.get('/quiz12345', (req, res) => {
     <body>
       <h1>Quiz de Matemática</h1>
       <div id="quiz-container"></div>
+      <button id="submit-quiz">Enviar Respostas</button>
 
       <script>
         const perguntas = ${JSON.stringify(quizData.perguntas)};
+        const alunoID = "${alunoID}";
 
         const quizContainer = document.getElementById('quiz-container');
 
@@ -51,10 +52,51 @@ app.get('/quiz12345', (req, res) => {
 
           quizContainer.appendChild(perguntaDiv);
         });
+
+        document.getElementById('submit-quiz').addEventListener('click', () => {
+          const respostas = perguntas.map((pergunta, index) => {
+            const resposta = document.querySelector(\`input[name="pergunta\${index}"]:checked\`);
+            return resposta ? resposta.value : null;
+          });
+
+          fetch('/submit-quiz', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ alunoID, respostas })
+          })
+          .then(response => response.json())
+          .then(data => {
+            alert('Respostas enviadas com sucesso!');
+          })
+          .catch(error => {
+            console.error('Erro ao enviar respostas:', error);
+          });
+        });
       </script>
     </body>
     </html>
   `);
+});
+
+// Rota para receber as respostas dos alunos
+app.post('/submit-quiz', (req, res) => {
+  const { alunoID, respostas: respostasAluno } = req.body;
+
+  if (!alunoID || !respostasAluno) {
+    return res.status(400).json({ message: 'Dados incompletos' });
+  }
+
+  respostas[alunoID] = respostasAluno;
+  console.log('Respostas recebidas:', respostasAluno);
+
+  res.json({ message: 'Respostas recebidas com sucesso!' });
+});
+
+// Rota para obter os dados analíticos
+app.get('/analytics', (req, res) => {
+  res.json(respostas);
 });
 
 app.post('/deploy-quiz', (req, res) => {
