@@ -12,7 +12,14 @@ app.get('/', (req, res) => {
 });
 
 app.post('/deploy-quiz', (req, res) => {
+  console.log('Recebendo dados do formulário:', req.body);
+
   const { nivel_dificuldade, topicos } = req.body;
+
+  if (!nivel_dificuldade || !topicos) {
+    console.error('Dados incompletos recebidos');
+    return res.status(400).json({ message: 'Dados incompletos' });
+  }
 
   // Simulação de geração de URL única para cada aluno
   const alunoID = uuid.v4();
