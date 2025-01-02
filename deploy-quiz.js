@@ -96,6 +96,41 @@ app.post('/submit-quiz', (req, res) => {
 
 // Rota para obter os dados analíticos
 app.get('/analytics', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Desempenho dos Alunos</title>
+    </head>
+    <body>
+      <h1>Desempenho dos Alunos</h1>
+      <div id="analytics-container"></div>
+
+      <script>
+        fetch('/get-analytics')
+          .then(response => response.json())
+          .then(data => {
+            const analyticsContainer = document.getElementById('analytics-container');
+            Object.keys(data).forEach(alunoID => {
+              const alunoDiv = document.createElement('div');
+              alunoDiv.innerHTML = \`<h3>Aluno: \${alunoID}</h3>\`;
+              data[alunoID].forEach((resposta, index) => {
+                alunoDiv.innerHTML += \`<p>Pergunta \${index + 1}: \${resposta}</p>\`;
+              });
+              analyticsContainer.appendChild(alunoDiv);
+            });
+          })
+          .catch(error => {
+            console.error('Erro ao obter dados analíticos:', error);
+          });
+      </script>
+    </body>
+    </html>
+  `);
+});
+
+// Rota para fornecer os dados analíticos
+app.get('/get-analytics', (req, res) => {
   res.json(respostas);
 });
 
