@@ -55,7 +55,7 @@ exports.deployQuiz = (req, res) => {
     quizzes[alunoID] = { perguntas };
     //return `http://${req.hostname}:3000/quiz12345?aluno=${alunoID}`; //dev
     // return `http://${req.hostname}:3000/quiz12345?aluno=${alunoID}`;
-    return http://${req.hostname}/quiz12345?aluno=${alunoID};
+    return `http://${req.hostname}/quiz12345?aluno=${alunoID}`;
   });
 
   res.json({
