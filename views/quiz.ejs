@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Quiz de Matemática</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+    />
+  </head>
+  <body class="bg-light">
+    <div class="container my-5">
+      <h1 class="mb-4 text-center">Quiz de Matemática</h1>
+      <div id="quiz-container" class="row"></div>
+      <div class="text-center mt-4">
+        <button id="submit-quiz" class="btn btn-primary">
+          Enviar Respostas
+        </button>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+      // Os dados do quiz são passados pelo controller
+      const perguntas = <%- JSON.stringify(quizData.perguntas) %>;
+      const alunoID = "<%= alunoID %>";
+
+      const quizContainer = document.getElementById('quiz-container');
+
+      perguntas.forEach((pergunta, index) => {
+        const card = document.createElement('div');
+        card.className = 'card mb-3';
+
+        const cardBody = document.createElement('div');
+        cardBody.className = 'card-body';
+
+        const questionTitle = document.createElement('h5');
+        questionTitle.className = 'card-title';
+        questionTitle.textContent = `${index + 1}. ${pergunta.pergunta}`;
+
+        const optionsContainer = document.createElement('div');
+        pergunta.opcoes.forEach(opcao => {
+          const optionDiv = document.createElement('div');
+          optionDiv.className = 'form-check';
+
+          const optionInput = document.createElement('input');
+          optionInput.className = 'form-check-input';
+          optionInput.type = 'radio';
+          optionInput.name = `pergunta${index}`;
+          optionInput.value = opcao;
+
+          const optionLabel = document.createElement('label');
+          optionLabel.className = 'form-check-label';
+          optionLabel.textContent = opcao;
+
+          optionDiv.appendChild(optionInput);
+          optionDiv.appendChild(optionLabel);
+          optionsContainer.appendChild(optionDiv);
+        });
+
+        cardBody.appendChild(questionTitle);
+        cardBody.appendChild(optionsContainer);
+        card.appendChild(cardBody);
+        quizContainer.appendChild(card);
+      });
+
+      document.getElementById('submit-quiz').addEventListener('click', () => {
+        const respostas = perguntas.map((_, index) => {
+          const respostaMarcada = document.querySelector(`input[name="pergunta${index}"]:checked`);
+          return respostaMarcada ? respostaMarcada.value : null;
+        });
+
+        fetch('/submit-quiz', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ alunoID, respostas })
+        })
+        .then(response => response.json())
+        .then(data => {
+          alert('Respostas enviadas com sucesso!');
+        })
+        .catch(error => {
+          console.error('Erro ao enviar respostas:', error);
+          alert('Ocorreu um erro ao enviar as respostas.');
+        });
+      });
+    </script>
+  </body>
+</html>
